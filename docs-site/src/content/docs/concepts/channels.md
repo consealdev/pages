@@ -13,6 +13,6 @@ A new member joins with the same kind of ceremony as a device does: both sides s
 member is the backend's job. It stops serving them the channel, and they keep what they already had, so a fresh key means
 a new channel with new invites.
 
-:::note
-This page is a placeholder. Creating a channel, inviting a member and what the server still learns come later.
-:::
+The calls, an example, the routes a backend serves and what happens when a member leaves are on
+[Channels: sharing a key](/docs/core/channels/). The [threat model](/docs/security/channels/) says what a channel
+enforces and what the server still learns.

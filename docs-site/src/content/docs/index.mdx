@@ -12,15 +12,16 @@ import { CardGrid, LinkCard } from '@astrojs/starlight/components';
 Conseal is end-to-end encryption for web apps. Data is sealed on the user's device before it leaves it, and the server
 stores and orders ciphertext it can't open.
 
-These docs are a first outline: each page below says what its part is, and the guides come later.
+The crypto core and the threat model are written out page by page. The guides, and the sync, UI and .NET parts, are
+still an outline.
 
 <CardGrid>
     <LinkCard title="Introduction" description="What Conseal does, and what it leaves to your app." href="/docs/start/introduction/" />
-    <LinkCard title="Concepts" description="The keys, the circle that shares them between devices, and channels." href="/docs/concepts/keys/" />
-    <LinkCard title="TypeScript" description="The crypto core: sealing, key wrapping, recovery and storage." href="/docs/core/overview/" />
+    <LinkCard title="Concepts" description="The keys, the circle that shares them between devices, channels, and a glossary." href="/docs/concepts/keys/" />
+    <LinkCard title="TypeScript" description="The crypto core: every call with its signature and an example." href="/docs/core/overview/" />
     <LinkCard title="Sync" description="Encrypted records across a user's devices." href="/docs/sync/overview/" />
     <LinkCard title="UI components" description="The circle ceremony's screens, as Lit components." href="/docs/ui/overview/" />
     <LinkCard title=".NET backend" description="The ASP.NET Core backend for the sync and circle routes." href="/docs/dotnet/overview/" />
     <LinkCard title="API" description="The OpenAPI contract between the client and any backend." href="/docs/api/overview/" />
-    <LinkCard title="Threat model" description="What Conseal protects, against whom, and what it relies on." href="/docs/security/threat-model/" />
+    <LinkCard title="Threat model" description="What Conseal protects, against whom, and what it relies on, a page for each layer." href="/docs/security/threat-model/" />
 </CardGrid>

@@ -22,7 +22,15 @@ Run from this folder, in PowerShell or any shell. The first time, install the de
 
 The pages are markdown in `src/content/docs`, one folder for each part of Conseal: `start`, `concepts`, `core`, `sync`, `ui`, `dotnet`, `api` and `security`. A folder is a group in the sidebar, so a new markdown file in one joins it, ordered by its `sidebar.order` or else by its name. A new folder needs a group in `astro.config.mjs`. `index.mdx` is the docs' landing page, reached from the "Docs" label in the header. Links between pages include the base: `/docs/concepts/keys/`.
 
-Each page has a `description` of 120 to 160 characters, and a title short enough to stay under 60 with the site's name added. The pages are placeholders for now: each says what its part is, and the guides come later.
+Each page has a `description` of 120 to 160 characters, and a title short enough to stay under 60 with the site's name added.
+
+What is written out, and what is still an outline:
+
+| Folder | State |
+|---|---|
+| `core`, `concepts/glossary.md` | One page for each module of `@consealdev/conseal`, with its signatures and an example. They come from the pages of the v0.6.0 site (`../archive/v0.6.0/usage`), checked against `src/core` in conseal-js; the Circle page is written from `circle.ts`. Check them against the code again when a call changes |
+| `security` | Generated from `threat-model.md` in the conseal repository, one page for each layer. Don't edit them: change the model there, then run `node scripts/split-threat-model.mjs <path to threat-model.md>` from this folder and commit what it writes |
+| `start`, `concepts` (keys, circle, channels), `sync`, `ui`, `dotnet`, `api` | An outline: each page says what its part is, and the guides come later |
 
 ## Other files
 

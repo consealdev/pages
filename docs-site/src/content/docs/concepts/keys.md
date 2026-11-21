@@ -17,6 +17,16 @@ keys, salts and public keys.
 | Recovery phrase | 24 BIP-39 words. The account key is derived from it, so it can always be recovered. Shown once, never stored. |
 | Commitment | A hash of the account key, published when the circle is created, so a joining device can detect a substituted key. |
 
-:::note
-This page is a placeholder. How each key is made, wrapped and rotated comes later.
-:::
+## Where each key is covered
+
+- The account key encrypts data with [sealing](/docs/core/aes/), and each record carries its own IV.
+- [Passphrase key wrapping](/docs/core/pbkdf2/) protects the account key for the server, and with a
+  [Secret Key](/docs/core/secret-key/) a stolen wrapped key can't be guessed at without the device.
+- A new device opens the account key with [`init`](/docs/core/init/), and keeps it in
+  [IndexedDB](/docs/core/storage/) as a key whose bytes can't be read.
+- The [recovery phrase](/docs/core/mnemonic/) derives the account key, so losing the passphrase and the wrapped key
+  doesn't lose the data.
+- The [commitment](/docs/core/circle/) is made when the circle is created, and checked when a device joins.
+
+The [glossary](/docs/concepts/glossary/) has each term, and the [threat model](/docs/security/keys/) says what the
+wrapping protects against.

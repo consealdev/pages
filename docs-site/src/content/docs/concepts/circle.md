@@ -17,6 +17,6 @@ joins in four steps:
 The code is 16 characters, such as `7KQ2-M9XD-4RTF-B8NW`. Showing it on both devices and asking the user to confirm it is
 what stops a server from answering a join with a key of its own, so the app has to do it.
 
-:::note
-This page is a placeholder. The calls for each step and the screens that ask for the confirmation come later.
-:::
+The calls for each step, with an example and the rules your app has to keep, are on
+[The circle: joining a device](/docs/core/circle/). What the circle enforces, and what it relies on, is in the
+[threat model](/docs/security/circle/).
