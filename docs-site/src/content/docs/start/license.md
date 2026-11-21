@@ -1,6 +1,6 @@
 ---
 title: License
-description: "Conseal is available under the GNU AGPL, version 3 or later, or a Commercial License: when the AGPL is enough, when an app needs the other, and how to ask."
+description: "Conseal is under the GNU AGPL, version 3 or any later version, or a Commercial License: when each applies and how to ask for the commercial one."
 sidebar:
     order: 3
 ---
