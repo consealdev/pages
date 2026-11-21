@@ -1,0 +1,10 @@
+---
+// Starlight's head, plus the script that puts the search shortcut into the search button's name.
+import Default from '@astrojs/starlight/components/Head.astro';
+---
+
+<Default {...Astro.props} />
+
+<script>
+    import '../scripts/search-hint';
+</script>

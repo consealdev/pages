@@ -1,0 +1,26 @@
+---
+title: Conseal Docs
+# Starlight appends the site title to every page's, which would read "Conseal Docs | Conseal Docs" here.
+head:
+    - tag: title
+      content: Conseal Docs
+description: Guides and reference for Conseal, end-to-end encrypted sync and sharing for web apps, with a crypto core, a sync engine and an ASP.NET Core backend.
+---
+
+import { CardGrid, LinkCard } from '@astrojs/starlight/components';
+
+Conseal is end-to-end encryption for web apps. Data is sealed on the user's device before it leaves it, and the server
+stores and orders ciphertext it can't open.
+
+These docs are a first outline: each page below says what its part is, and the guides come later.
+
+<CardGrid>
+    <LinkCard title="Introduction" description="What Conseal does, and what it leaves to your app." href="/docs/start/introduction/" />
+    <LinkCard title="Concepts" description="The keys, the circle that shares them between devices, and channels." href="/docs/concepts/keys/" />
+    <LinkCard title="TypeScript" description="The crypto core: sealing, key wrapping, recovery and storage." href="/docs/core/overview/" />
+    <LinkCard title="Sync" description="Encrypted records across a user's devices." href="/docs/sync/overview/" />
+    <LinkCard title="UI components" description="The circle ceremony's screens, as Lit components." href="/docs/ui/overview/" />
+    <LinkCard title=".NET backend" description="The ASP.NET Core backend for the sync and circle routes." href="/docs/dotnet/overview/" />
+    <LinkCard title="API" description="The OpenAPI contract between the client and any backend." href="/docs/api/overview/" />
+    <LinkCard title="Threat model" description="What Conseal protects, against whom, and what it relies on." href="/docs/security/threat-model/" />
+</CardGrid>
