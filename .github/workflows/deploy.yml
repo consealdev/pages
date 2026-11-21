@@ -44,10 +44,11 @@ jobs:
         with:
           path: _site/
 
-  # Waits for approval in the production environment
+  # Waits for approval in the production environment. Skipped while the repository is private: GitHub Pages and an
+  # approval that waits need a public repository on a Free owner, so the job could only fail.
   deploy:
     name: Deploy to GitHub Pages
-    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main' && !github.event.repository.private
     needs: build
     runs-on: ubuntu-24.04
     permissions:
