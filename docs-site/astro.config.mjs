@@ -1,5 +1,5 @@
 // The Conseal docs as a Starlight site, served at conseal.dev/docs, beside the home page in
-// ../www. See README.md.
+// ../www.
 
 import { defineConfig } from 'astro/config';
 import starlight from '@astrojs/starlight';
