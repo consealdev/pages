@@ -35,6 +35,6 @@ The Caddyfile in `_local` serves this repo at https://conseal.local: `www/` at `
 
 ## Deploy
 
-`.github/workflows/deploy.yml` builds the docs and assembles the site on every pull request (`.github/assemble-site.sh`: `www/`, with the docs' build at `/docs`). A push to `main` deploys it to GitHub Pages once approved in the `production` environment, which needs the repository's Pages source set to GitHub Actions, with conseal.dev as its custom domain.
+`.github/workflows/deploy.yml` builds the docs and assembles the site on every pull request (`.github/assemble-site.sh`: `www/`, with the docs' build at `/docs`). A push to `main` deploys it to GitHub Pages once approved in the `production` environment, which needs the repository's Pages source set to GitHub Actions, with conseal.dev as its custom domain. The deploy job is skipped while the repository is private, since GitHub Pages needs a public repository on a Free owner; it runs by itself on the first push to `main` after the repository is public.
 
 Analytics: the docs add the Umami script only when the `UMAMI_WEBSITE_ID` repository variable is set. The home page has none yet.
