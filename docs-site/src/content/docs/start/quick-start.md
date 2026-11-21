@@ -5,6 +5,10 @@ sidebar:
     label: Quick start
 ---
 
+```sh
+npm install @consealdev/conseal
+```
+
 The crypto core is built only on the browser's SubtleCrypto. Generate a key, seal a record with it and open it again:
 
 ```ts
@@ -19,8 +23,8 @@ const opened = await unseal(key, ciphertext, iv);
 `seal` gives each record a fresh random IV, which is stored beside its ciphertext. `unseal` throws if the key is wrong or
 the data was changed.
 
-The sync and UI entry points are not published yet.
+To share the key between a user's devices and sync records between them, see [Sync](/docs/sync/overview/).
 
 :::note
-This page is a placeholder. Installing the package, wrapping the key with a passphrase and syncing a record come later.
+This page is a placeholder. Wrapping the key with a passphrase comes later.
 :::
