@@ -1,0 +1,284 @@
+/* Conseal brand on Starlight's own design: neutral surfaces, the accent colours, and the brand
+   violet for the marks that say "Conseal". The brand tokens (--brand, --brand-text, --brand-on) come
+   from the site's own brand.css, so the docs and the pages share one set of measured tones. */
+@import '../../../www/assets/css/brand.css';
+
+/* ── Header ──
+   Two rows fixed at the top. The header proper is 3rem at every width, the same as the product sites',
+   with a 2rem search field. Under it is the pre-release notice (src/components/header.astro),
+   one line, or two on a phone. Starlight derives the page offsets from --sl-nav-height, which
+   is therefore the height of both rows; the header's own height and the mobile menu button,
+   which took it for the header alone, are set from the top row below. */
+:root {
+    --docs-header-height: 3rem;
+    --docs-notice-height: 1.5rem;
+    --sl-nav-height: calc(var(--docs-header-height) + var(--docs-notice-height));
+    --sl-nav-pad-y: 0.5rem;
+}
+
+/* The notice text is about 31rem long, and more in a wider system font, so below that the row is
+   given two lines' height with room to spare: some spare height on a wide phone beats a wrapped
+   line spilling out of a one-line row. */
+@media (max-width: 40rem) {
+    :root {
+        --docs-notice-height: 2.375rem;
+    }
+}
+
+.page > header {
+    height: var(--docs-header-height);
+}
+
+.sl-menu-button {
+    top: calc((var(--docs-header-height) - var(--sl-menu-button-size)) / 2);
+}
+
+site-search button[data-open-modal] {
+    height: 2rem;
+}
+
+/* ── Scrolling ──
+   Only the content scrolls. The header, the sidebar and the "On this page" bar stay put, and
+   the scrollbar sits below them instead of beside the header, so the header does not shift
+   between pages that scroll and pages that don't.
+
+   Starlight scrolls the window. Here the window is fixed and Starlight's own .main-frame is
+   the scroll container, from under the header (and, on narrower screens, under the "On this
+   page" bar — --sl-mobile-toc-height is 0 when there is none) to the bottom of the window.
+   The scrollbar gutter stays reserved, as in the sidebar, so the column does not shift
+   either. src/components/page-frame.astro handles what assumed a window scroll.
+
+   Only where the pointer is a mouse, which is where a scrollbar is drawn beside the header.
+   A touch screen scrolls the window, as Starlight does. iOS Safari clips a position:fixed
+   element that is inside a scrolling element but outside its box, and the "On this page" bar
+   is both: it is in .main-frame and above it. It disappeared there, and a touch screen has
+   no scrollbar to keep out from beside the header anyway. */
+@media (hover: hover) and (pointer: fine) {
+    html {
+        overflow: hidden;
+    }
+
+    .main-frame {
+        position: fixed;
+        inset: calc(var(--sl-nav-height) + var(--sl-mobile-toc-height)) 0 0;
+        padding-top: 0;
+        overflow-y: auto;
+        scrollbar-gutter: stable;
+        scroll-padding-top: 1.5rem;
+    }
+
+    /* Behind the search dialog the page stays put, as Starlight does for the window. */
+    [data-search-modal-open] .main-frame {
+        overflow: hidden;
+    }
+}
+
+/* The frame takes focus on load so the keyboard scrolls it; it is not a control. */
+.main-frame:focus {
+    outline: none;
+}
+
+@media print {
+    html {
+        overflow: visible;
+    }
+
+    .main-frame {
+        position: static;
+        overflow: visible;
+    }
+}
+
+/* ── Surfaces and text ──
+   Starlight's greys lean blue (hue 224). These are the same lightness steps in the cool neutral
+   the Codesense sites share, OKLCH hue 258 at chroma 0.008, and reuse the pages' tokens where one
+   fits: the dark header, sidebar and code are the pages' --bg-alt, --bg and --bg-elev, and the
+   light main and sidebar are their --bg and --bg-alt.
+
+   Three surfaces per theme, about 2 points of OKLCH lightness apart, as on the pages:
+
+   dark   header and code #121519 · sidebar #171a1f · main #1d2024
+   light  header and code #ffffff · sidebar #eef1f5 · main #f5f8fb
+
+   The header is the extreme of each theme, near black or white, and code blocks share it, so
+   a block reads as a piece of the header's ground set into the page. The sidebar is always
+   the quieter of the two panes, a step darker than the main column.
+
+   Measured 2026-09-30 for lpdf.io's docs, which these are copied from, lowest across the
+   surfaces: headings 16.35 / 15.58, body 9.25 / 10.37, muted 4.85 / 6.21 (dark / light). */
+:root {
+    --sl-color-white: #ffffff;
+    --sl-color-gray-1: #ebeff4;
+    --sl-color-gray-2: #c0c3c8;
+    --sl-color-gray-3: #898c91;
+    --sl-color-gray-4: #56595e;
+    --sl-color-gray-5: #36383c;
+    --sl-color-gray-6: #23262b;
+    --sl-color-black: #16191c;
+
+    --sl-color-bg-nav: #121519;
+    --sl-color-bg-sidebar: #171a1f;
+    --sl-color-bg: #1d2024;
+}
+
+:root[data-theme='light'] {
+    --sl-color-white: #16191c;
+    --sl-color-gray-1: #24272a;
+    --sl-color-gray-2: #36383c;
+    --sl-color-gray-3: #56595e;
+    --sl-color-gray-4: #898c91;
+    --sl-color-gray-5: #c0c3c8;
+    --sl-color-gray-6: #e4e7eb;
+    --sl-color-gray-7: #ffffff;
+    --sl-color-black: #ffffff;
+
+    --sl-color-bg-nav: #ffffff;
+    --sl-color-bg-sidebar: #eef1f5;
+    --sl-color-bg: #f5f8fb;
+}
+
+/* The "On this page" bar that replaces the right-hand contents on narrower screens belongs to
+   the page, not the header, so it takes the main column's colour. */
+mobile-starlight-toc nav {
+    background-color: var(--sl-color-bg);
+}
+
+/* Code blocks on the header's colour. Expressive Code otherwise takes gray-6 in dark and
+   gray-7 in light; its variables sit in a Starlight layer, so this plain rule wins. */
+.expressive-code {
+    --ec-frm-edBg: var(--sl-color-bg-nav);
+    --ec-frm-trmBg: var(--sl-color-bg-nav);
+    --ec-frm-edActTabBg: var(--sl-color-bg-nav);
+}
+
+/* ── Inline code ──
+   On the header's colour, like a block of code, with the same hairline round it. Starlight's
+   own chip is gray-5 (gray-6 in light), which the brand tone only reaches 3.70 / 4.40 on, and
+   a link in code, `SyncEngine`, is brand-coloured text on that chip. On the header's
+   colour it is 5.77 in dark and 5.46 in light, the same as on the header itself. */
+:root {
+    --sl-color-bg-inline-code: var(--sl-color-bg-nav);
+}
+
+.sl-markdown-content :not(pre) > code:not(:where(.not-content *)) {
+    border: 1px solid color-mix(in srgb, var(--sl-color-gray-5) 75%, transparent);
+    border-radius: 3px;
+}
+
+/* ── Tables ──
+   The same kind of panel as a block of code: the header's colour, and the hairline Expressive
+   Code draws round a block (gray-5 at 75%), also used between the rows. The text is 14px, two
+   under the body and the size of the code beside it, with the inline code in it at 12px. A
+   table is as wide as its content up to the column and scrolls inside the column beyond that,
+   so a short one is a short panel and not a full-width one with empty space on the right. */
+:root {
+    --docs-hairline: color-mix(in srgb, var(--sl-color-gray-5) 75%, transparent);
+}
+
+.sl-markdown-content table:not(:where(.not-content *)) {
+    width: max-content;
+    max-width: 100%;
+    border: 1px solid var(--docs-hairline);
+    border-radius: 1px;
+    background-color: var(--sl-color-bg-nav);
+    font-size: var(--sl-text-sm);
+}
+
+.sl-markdown-content :is(th, td):not(:where(.not-content *)) {
+    border-bottom-color: var(--docs-hairline);
+}
+
+/* Starlight sets a table's edges flush with the text; in a panel they need room. */
+.sl-markdown-content :is(th:first-child, td:first-child):not(:where(.not-content *)) {
+    padding-inline-start: 1rem;
+}
+
+.sl-markdown-content :is(th:last-child, td:last-child):not(:where(.not-content *)) {
+    padding-inline-end: 1rem;
+}
+
+/* The panel's own border closes the last row. */
+.sl-markdown-content tbody tr:last-child :is(th, td):not(:where(.not-content *)) {
+    border-bottom: 0;
+}
+
+.sl-markdown-content table code:not(:where(.not-content *)) {
+    font-size: var(--sl-text-2xs);
+}
+
+/* ── Accent ──
+   Starlight uses the accent for search highlights, the active tab's underline and fills with
+   text on them, which need 4.5:1, so each theme gets a tone stepped along the brand hue
+   (OKLCH hue 279.7, the mark's).
+   Measured 2026-10-23, lowest across the surfaces: accent-high dark #cad0ff 10.88, light
+   #413f96 7.80; accent-high on accent-low, dark 10.44, light 7.41; accent as text, dark #9aa0ff
+   6.89, light #5957c7 5.13; accent as a fill under its text, dark #9aa0ff with #16191c 7.43,
+   light #5957c7 with white 5.81. */
+:root {
+    --sl-color-accent-low: #1f2040;
+    --sl-color-accent: #9aa0ff;
+    --sl-color-accent-high: #cad0ff;
+}
+
+:root[data-theme='light'] {
+    --sl-color-accent-low: #e7eaff;
+    --sl-color-accent: #5957c7;
+    --sl-color-accent-high: #413f96;
+}
+
+/* ── Brand ──
+   The brand violet for the marks that say "Conseal": the current page in the sidebar and in
+   "On this page", links in the content, the selected tab's underline, and the hover on the
+   header's icons (which rest in gray-2). Plain text in the brand colour, no fill. Text uses
+   --brand-text, the tone the pages measure at 4.5:1 on every surface of each theme: dark
+   header 5.77 · sidebar 5.50 · main 5.15, light header 5.46 · sidebar 4.82 · main 5.13. */
+.sidebar-content a[aria-current='page'],
+.sidebar-content a[aria-current='page']:hover,
+.sidebar-content a[aria-current='page']:focus {
+    background-color: transparent;
+    color: var(--brand-text);
+    font-weight: 600;
+}
+
+:is(starlight-toc, mobile-starlight-toc) a[aria-current='true'] {
+    color: var(--brand-text);
+}
+
+starlight-tabs [role='tab'][aria-selected='true'] {
+    --sl-tab-color-border: var(--brand);
+}
+
+.sl-markdown-content a:not(:where(.not-content *)) {
+    color: var(--brand-text);
+    font-weight: 400;
+}
+.sl-markdown-content a:hover:not(:where(.not-content *)) {
+    color: var(--sl-color-white);
+}
+
+/* The search dialog follows the header's icons: a result's outline and title, and the clear
+   and cancel buttons, rest neutral and take the brand violet on hover or focus. */
+#starlight__search .pagefind-ui__result-title:not(:where(.pagefind-ui__result-nested *)):is(:hover, :focus-within),
+#starlight__search .pagefind-ui__result-nested:is(:hover, :focus-within) {
+    outline-color: var(--brand);
+}
+#starlight__search :is(.pagefind-ui__result-title, .pagefind-ui__result-nested):hover .pagefind-ui__result-link {
+    --pagefind-ui-text: var(--brand-text);
+}
+#starlight__search .pagefind-ui__search-clear::before {
+    background-color: var(--sl-color-gray-2);
+    transition: background-color 0.15s;
+}
+#starlight__search .pagefind-ui__search-clear:is(:hover, :focus)::before {
+    background-color: var(--brand-text);
+}
+#starlight__search .pagefind-ui__search-clear:focus {
+    outline-color: var(--brand);
+}
+site-search button[data-close-modal] {
+    color: var(--sl-color-gray-2);
+    transition: color 0.15s;
+}
+site-search button[data-close-modal]:hover {
+    color: var(--brand-text);
+}
