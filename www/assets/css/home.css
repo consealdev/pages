@@ -1,13 +1,6 @@
 /* The home page's own rules, on top of relayout.css, pages-base.css and brand.css. Layout is Relayout's classes in
    the markup; what is here is what they don't cover. */
 
-/* The shared dark --text-subtle (pages-base.css, #797d83) is 3.67 to 4.42 across the surfaces, under the 4.5:1 that
-   the footer's links and copyright and the section label need. This site's own tone until the shared one is fixed
-   (the file's header notes the gap): 4.61 on --bg-elev, the lightest surface, and 4.97 to 6.03 on the others. */
-[data-theme="dark"] {
-    --text-subtle: #8a8e95;
-}
-
 /* ── Narrow screens ──
    Below 350px the page keeps its width and scrolls sideways, in place of squeezing the demo's tabs, its title bar and its
    fields further. The fixed header is as wide as the window and has room. */

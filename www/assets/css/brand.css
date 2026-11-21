@@ -19,4 +19,9 @@
 
 [data-theme="dark"] {
     --brand-text: #8588e2;
+    /* The shared dark --text-subtle (pages-base.css, #797d83) is 3.67 to 4.42 across the surfaces, under the 4.5:1 that
+       the footer's links and copyright, the section label and a legal page's masthead need. This site's own tone until
+       the shared one is fixed (pages-base.css's header notes the gap): 4.61 on --bg-elev, the lightest surface, and 4.97
+       to 6.03 on the others. Here and not in home.css, so every page of the site has it. */
+    --text-subtle: #8a8e95;
 }

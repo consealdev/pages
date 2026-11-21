@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8" />
+    <script>
+        // The docs' theme choice (docs-site/src/theme.ts), set before the page paints: the cs-theme cookie, then
+        // localStorage, and dark when neither holds one
+        try
+        {
+            const stored = document.cookie.split('; ').find(c => c.startsWith('cs-theme='))?.split('=')[1] ?? localStorage.getItem('cs-theme');
+            if (stored === 'light') document.documentElement.dataset.theme = 'light';
+        }
+        catch
+        {
+            // Storage is blocked: the page stays dark
+        }
+    </script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Conseal — License</title>
+    <meta name="description" content="The Conseal License: the GNU AGPL, version 3 or any later version, or the Conseal Commercial License for closed-source apps, with its terms." />
+    <meta name="robots" content="noindex" />
+    <link rel="canonical" href="https://conseal.dev/license/" />
+    <link rel="icon" href="../assets/favicon.ico" />
+    <link rel="stylesheet" href="../assets/css/relayout.css" />
+    <link rel="stylesheet" href="../assets/css/pages-base.css" />
+    <link rel="stylesheet" href="../assets/css/brand.css" />
+    <script type="module" src="../assets/js/home.js"></script>
+</head>
+<body class="page-legal">
+    <nav class="nav">
+        <div class="nav-inner rl-row rl-nowrap rl-justify-between">
+            <a href="../" class="nav-logo">
+                <img src="../assets/images/conseal-mark.svg" alt="" class="nav-logo-mark" />
+                <span class="nav-logo-word" translate="no">Conseal</span>
+            </a>
+            <button type="button" class="theme-btn" aria-label="Toggle theme" title="Toggle theme">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 256 256" aria-hidden="true"><path d="M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24Zm8,16.37a86.4,86.4,0,0,1,16,3V212.67a86.4,86.4,0,0,1-16,3Zm32,9.26a87.81,87.81,0,0,1,16,10.54V195.83a87.81,87.81,0,0,1-16,10.54ZM40,128a88.11,88.11,0,0,1,80-87.63V215.63A88.11,88.11,0,0,1,40,128Zm160,50.54V77.46a87.82,87.82,0,0,1,0,101.08Z"></path></svg>
+            </button>
+        </div>
+    </nav>
+
+    <main>
+        <div class="container rl-column rl-gap-2xl rl-padding-2xl">
+            <md-html>
+<!-- license -->
+            </md-html>
+        </div>
+    </main>
+
+    <footer>
+        <!-- The product sites' footer (product-footer in the portal): no .container, so the columns line up under
+             the header's logo, inside the same gutter -->
+        <div class="footer-columns">
+            <div class="rl-grid rl-grid-fit-m rl-gap-xl">
+                <div class="rl-column rl-gap-s">
+                    <a href="../" class="footer-logo">
+                        <img src="../assets/images/conseal-mark.svg" alt="" class="footer-logo-mark" />
+                        <span class="footer-logo-word" translate="no">Conseal</span>
+                    </a>
+                    <p class="footer-tagline">Zero-knowledge sync<br />for your web app's data</p>
+                </div>
+                <div class="rl-column rl-gap-s">
+                    <span class="footer-heading">Packages</span>
+                    <div class="rl-column rl-gap-m footer-links">
+                        <a href="../docs/core/overview/">TypeScript</a>
+                        <a href="../docs/dotnet/overview/">ASP.NET Core</a>
+                    </div>
+                </div>
+                <div class="rl-column rl-gap-s">
+                    <span class="footer-heading">Documentation</span>
+                    <div class="rl-column rl-gap-m footer-links">
+                        <a href="../docs/start/introduction/">Introduction</a>
+                        <a href="../docs/concepts/keys/">Concepts</a>
+                        <a href="../docs/security/threat-model/">Threat model</a>
+                        <a href="../docs/api/overview/">API</a>
+                    </div>
+                </div>
+                <div class="rl-column rl-gap-s">
+                    <span class="footer-heading">Company</span>
+                    <div class="rl-column rl-gap-m footer-links">
+                        <a href="../license/">License</a>
+                        <a href="https://my.codesense.dev/terms" target="_blank" rel="noopener noreferrer">Terms of Service</a>
+                        <a href="https://my.codesense.dev/privacy" target="_blank" rel="noopener noreferrer">Privacy Policy</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="footer-baseline">
+            <p class="footer-copy">© 2026 Codesense LLC</p>
+        </div>
+    </footer>
+</body>
+</html>

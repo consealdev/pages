@@ -23,6 +23,9 @@ mkdir -p "$out/docs"
 cp -a www/. "$out/"
 cp -a "$docs/." "$out/docs/"
 
+# The license page is a shell until its text, the Commercial License, is rendered into it.
+node docs-site/scripts/render-license.mjs "$out"
+
 # GitHub Pages answers a missing path with the 404.html at the site's root. Until www has its own,
 # the docs' one serves: its links carry the full /docs/ path, so it works from there too.
 if [ ! -f "$out/404.html" ]; then
@@ -32,6 +35,10 @@ fi
 # Fail here rather than deploy the wrong thing.
 if [ ! -f "$out/index.html" ]; then
     echo "::error::www/index.html is missing: the site has no home page"
+    exit 1
+fi
+if ! grep -q 'Conseal Commercial License' "$out/license/index.html"; then
+    echo "::error::the license page has no license text"
     exit 1
 fi
 if [ ! -f "$out/docs/pagefind/pagefind.js" ]; then
