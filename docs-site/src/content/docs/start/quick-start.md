@@ -3,6 +3,7 @@ title: Quick start
 description: "Seal and open a first record with the Conseal crypto core: generate a key, encrypt with AES-256-GCM and decrypt it again, in the browser."
 sidebar:
     label: Quick start
+    order: 2
 ---
 
 ```sh
