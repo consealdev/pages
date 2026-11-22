@@ -4,8 +4,10 @@
 import { defineConfig } from 'astro/config';
 import starlight from '@astrojs/starlight';
 
-// Umami is added only when the build has a website id: the UMAMI_WEBSITE_ID repository variable in CI.
-const umamiWebsiteId = process.env.UMAMI_WEBSITE_ID;
+// OpenPanel's visit counter is added only when the build has a client id: the OPENPANEL_CLIENT_ID repository variable
+// in CI. The same files go to pre.conseal.dev and conseal.dev, so www/assets/js/analytics.js counts visits to
+// conseal.dev only. The home page loads the same file (.github/assemble-site.sh).
+const openpanelClientId = process.env.OPENPANEL_CLIENT_ID;
 
 export default defineConfig({
     site: 'https://conseal.dev',
@@ -15,11 +17,15 @@ export default defineConfig({
             title: 'Conseal Docs',
             description: 'Guides and reference for Conseal: end-to-end encrypted sync and sharing for web apps, with a crypto core, a sync engine and an ASP.NET Core backend.',
             favicon: '/favicon.ico',
-            head: umamiWebsiteId
+            head: openpanelClientId
                 ? [
                     {
                         tag: 'script',
-                        attrs: { defer: true, src: 'https://cloud.umami.is/script.js', 'data-website-id': umamiWebsiteId },
+                        attrs: {
+                            defer: true,
+                            src: '/assets/js/analytics.js',
+                            'data-client-id': openpanelClientId,
+                        },
                     },
                 ]
                 : [],
