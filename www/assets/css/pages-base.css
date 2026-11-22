@@ -416,6 +416,15 @@ footer { background: var(--bg-chrome); border-top: 1px solid var(--border); }
     letter-spacing: .02em;
 }
 
+a.sdk-item-name {
+    text-decoration: none;
+    transition: color .15s;
+}
+
+a.sdk-item-name:hover {
+    color: var(--brand-text);
+}
+
 .sdk-item-links {
     display: flex;
     align-items: center;

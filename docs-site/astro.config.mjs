@@ -43,7 +43,7 @@ export default defineConfig({
             sidebar: [
                 { label: 'Getting Started', items: [{ autogenerate: { directory: 'start' } }] },
                 { label: 'Concepts', items: [{ autogenerate: { directory: 'concepts' } }] },
-                { label: 'TypeScript', items: [{ autogenerate: { directory: 'core' } }] },
+                { label: 'JavaScript', items: [{ autogenerate: { directory: 'core' } }] },
                 { label: 'Sync', items: [{ autogenerate: { directory: 'sync' } }] },
                 { label: 'UI components', items: [{ autogenerate: { directory: 'ui' } }] },
                 { label: '.NET backend', items: [{ autogenerate: { directory: 'dotnet' } }] },

@@ -12,7 +12,9 @@ them under one. The licenses decide: this page says what they mean for an app, a
 
 The [GNU Affero General Public License, version 3 or any later version](https://www.gnu.org/licenses/agpl-3.0.html) costs
 nothing. An app whose source is fully open under the AGPL, or under a license compatible with it, needs no other license.
-Both packages run inside the app, so the AGPL's terms reach the app too.
+Both packages run inside the app, so the AGPL's terms reach the app too. Each package carries the license as its `LICENSE`
+file: [`@consealdev/conseal`](https://github.com/consealdev/conseal-js/blob/main/LICENSE) and
+[`ConsealDev.Conseal`](https://github.com/consealdev/conseal-dotnet/blob/main/LICENSE).
 
 ## The Commercial License
 
