@@ -14,3 +14,14 @@ body > footer {
 .doc-card-body code {
     white-space: nowrap;
 }
+
+/* ── Package tiles ──
+   The names of the SDK tiles are links, as the registry names under them are, so they take the brand colour on hover
+   too. This is the site's own rule: pages-base.css is a copy of the shared file and isn't edited here. */
+a.sdk-item-name {
+    transition: color .15s;
+}
+
+a.sdk-item-name:hover {
+    color: var(--brand-text);
+}
