@@ -10,8 +10,11 @@ permissions:
   contents: read
 
 jobs:
-  # The home page is static, so the only thing built here is the docs. A pull request builds and
-  # assembles the site to prove it can; only main uploads it.
+  # The home page is static, so the only thing built here is the docs. It is built once and the same
+  # files go to pre and then to prod: what was looked at on pre.conseal.dev is what ships. Nothing in
+  # the pages differs between the two stages, which only differ in a CNAME and a robots.txt beside them
+  # (.github/set-stage.sh). A pull request builds and checks the site to prove it can, for both stages;
+  # only main uploads it and deploys. This job is the check main's ruleset requires.
   build:
     name: Build the site
     runs-on: ubuntu-24.04
@@ -29,29 +32,83 @@ jobs:
         run: npm ci
         working-directory: docs-site
 
-      # Umami is added only when the UMAMI_WEBSITE_ID repository variable is set
+      # The OpenPanel visit counter is added only when the OPENPANEL_CLIENT_ID repository variable is set, and counts
+      # conseal.dev only. The docs get it here, and the home page when the site is assembled below
       - name: Build the docs
         run: npm run build
         working-directory: docs-site
         env:
-          UMAMI_WEBSITE_ID: ${{ vars.UMAMI_WEBSITE_ID }}
+          OPENPANEL_CLIENT_ID: ${{ vars.OPENPANEL_CLIENT_ID }}
 
       - name: Assemble the site
         run: bash ./.github/assemble-site.sh _site
+        env:
+          OPENPANEL_CLIENT_ID: ${{ vars.OPENPANEL_CLIENT_ID }}
 
-      - uses: actions/upload-pages-artifact@v5
+      # The deploy sets the stage on the artifact. Do it here on copies, so a mistake in a stage fails the
+      # pull request and not the deploy.
+      - name: Check the site takes each stage
+        run: |
+          for stage in pre prod; do
+              cp -a _site "$RUNNER_TEMP/site-$stage"
+              bash ./.github/set-stage.sh "$RUNNER_TEMP/site-$stage" "$stage"
+          done
+
+      # Kept for 30 days, the longest a deployment can wait for its approval: the approval is often given only
+      # when the site is ready, and prod downloads this artifact once it is given
+      - uses: actions/upload-artifact@v6
         if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
         with:
-          path: _site/
+          name: site
+          path: _site
+          if-no-files-found: error
+          retention-days: 30
 
-  # Waits for approval in the production environment. Skipped while the repository is private: GitHub Pages and an
-  # approval that waits need a public repository on a Free owner, so the job could only fail.
-  deploy:
-    name: Deploy to GitHub Pages
-    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main' && !github.event.repository.private
+  # No approval: pre is where the site is looked at before the production approval is given. It is the
+  # GitHub Pages site of consealdev/pages-pre, from its gh-pages branch, which this job pushes with a deploy
+  # key (the public half on that repo with write access, the private half the PAGES_PRE_DEPLOY_KEY secret).
+  # It runs while this repository is private too: pages-pre is public, and holds only the built site.
+  deploy-pre:
+    name: Deploy to pre (pages-pre)
+    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
     needs: build
     runs-on: ubuntu-24.04
+    concurrency:
+      group: pages-pre
+      cancel-in-progress: true
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/download-artifact@v7
+        with:
+          name: site
+          path: _site
+
+      - name: Set the pre stage
+        run: bash ./.github/set-stage.sh _site pre
+
+      # enable_jekyll is false by default, which writes the .nojekyll that keeps Jekyll from dropping the
+      # docs' _astro folder
+      - name: Push to pages-pre
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          deploy_key: ${{ secrets.PAGES_PRE_DEPLOY_KEY }}
+          external_repository: consealdev/pages-pre
+          publish_branch: gh-pages
+          publish_dir: _site/
+          enable_jekyll: false
+          force_orphan: true
+
+  # Waits for approval in the production environment, and for pre to have deployed. Skipped while the repository
+  # is private: GitHub Pages and an approval that waits need a public repository on a Free owner, so the job
+  # could only fail.
+  deploy-prod:
+    name: Deploy to prod (GitHub Pages)
+    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main' && !github.event.repository.private
+    needs: [build, deploy-pre]
+    runs-on: ubuntu-24.04
     permissions:
+      contents: read
       pages: write
       id-token: write
     concurrency:
@@ -61,7 +118,21 @@ jobs:
       name: production
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/download-artifact@v7
+        with:
+          name: site
+          path: _site
+
+      - name: Check the prod stage
+        run: bash ./.github/set-stage.sh _site prod
+
       - uses: actions/configure-pages@v6
+
+      - uses: actions/upload-pages-artifact@v5
+        with:
+          path: _site/
 
       - id: deployment
         uses: actions/deploy-pages@v5
